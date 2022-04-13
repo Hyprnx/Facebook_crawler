@@ -4,6 +4,7 @@ from base import BaseClass
 from datetime import date, timedelta
 from push_to_mongodb import *
 from selenium import webdriver
+import numpy as np
 
 from resources.clone_acc import clone_acc
 from selenium.common.exceptions import ElementNotInteractableException, NoSuchElementException
@@ -132,9 +133,9 @@ class FacebookCrawler(BaseClass):
         self.driver.execute_script("window.history.go(-1)")
 
     def crawl(self):
-        for actions in range(0, 20):
-            self.log.info('Looped ' + str(actions) + ' time(s)')
-            action = random.randint(1, 3)
+        for actions in range(100):
+            self.log.info('Looped ' + str(actions + 1) + ' time(s)')
+            action = round(np.random.normal(2, 1))
             self.log.info(action)
             if action == 1:
                 self.log.info('Scrolling')
@@ -149,8 +150,11 @@ class FacebookCrawler(BaseClass):
                 self.log.info('Sleeping')
                 sleep(random.uniform(10, 15))
                 self._extract_info()
+            else:
+                continue
+            sleep(random.uniform(10, 30))
         self.driver.quit()
-        sleep(random.uniform(45, 90))
+
 
 def main():
     crawler = FacebookCrawler(headless=False)

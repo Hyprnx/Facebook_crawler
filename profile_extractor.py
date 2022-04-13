@@ -77,6 +77,8 @@ class ProfileExtractor(BaseClass):
         field = [replace_all(replacer, i) for i in field]
         field = [i for i in field if i]
         field = list(set(field))
+
+
         if len(field) == 1 and isinstance(field, list):
             if attrs == 'contact_info' and 'facebook.com' not in field[0]:
                 return f'https://www.facebook.com/{field[0]}'
@@ -84,7 +86,7 @@ class ProfileExtractor(BaseClass):
 
         return field
 
-    def extract(self) -> dict:
+    def extract(self) -> dict or None:
         self.data['name'] = self.process_data('name')
         self.data['placelive'] = self.process_data('placelive')
         self.data['education'] = self.process_data('education')
@@ -95,7 +97,8 @@ class ProfileExtractor(BaseClass):
         self.data['contact_info'] = self.process_data('contact_info')
         self.data['year_overviews'] = self.process_data('year_overviews')
         self.data['quote'] = self.process_data('quote')
-
+        if "can't use this feature " in self.data['name']:
+            raise ValueError("Account is restricted")
         return self.data
 
 def main():
