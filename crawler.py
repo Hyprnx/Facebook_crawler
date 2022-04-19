@@ -40,6 +40,8 @@ class FacebookCrawler(BaseClass):
             options.add_experimental_option("detach", True)
             self.log.info("Initialize Chrome Driver")
             self.driver = webdriver.Chrome(service=Service("chromedriver.exe"), options=options)
+            user_agent = self.driver.execute_script("return navigator.userAgent;")
+            self.log.info(f"Current User Agent is:{user_agent}")
             self.facebook_login()
 
         except BaseException as e:
